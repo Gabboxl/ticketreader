@@ -1,6 +1,7 @@
 package org.dslul.ticketreader;
 
-import android.util.Log;
+import static org.dslul.ticketreader.util.HelperFunctions.getBytesFromPage;
+import static java.lang.Math.abs;
 
 import org.dslul.ticketreader.util.GttDate;
 
@@ -11,9 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.Math.abs;
-import static org.dslul.ticketreader.util.HelperFunctions.getBytesFromPage;
 
 
 public class SmartCard {
@@ -89,13 +87,13 @@ public class SmartCard {
     }};
 
     private class Contract {
-        private int code;
-        private int counters;
-        private boolean isValid;
-        private boolean isTicket;
-        private boolean isSubscription;
-        private Date startDate;
-        private Date endDate;
+        private final int code;
+        private final int counters;
+        private final boolean isValid;
+        private final boolean isTicket;
+        private final boolean isSubscription;
+        private final Date startDate;
+        private final Date endDate;
 
         Contract(byte[] data, int counters) {
             int company = data[0];
@@ -175,15 +173,15 @@ public class SmartCard {
     }
 
 
-    private Date validationDate;
-    private Date creationDate;
+    private final Date validationDate;
+    private final Date creationDate;
     private Type type;
-    private List<Contract> tickets = new ArrayList<>();
-    private List<Contract> subscriptions = new ArrayList<>();
+    private final List<Contract> tickets = new ArrayList<>();
+    private final List<Contract> subscriptions = new ArrayList<>();
     private Contract subscription;
 
     private int ridesLeft = 0;
-    private long remainingMins;
+    private final long remainingMins;
 
 
     SmartCard(List<byte[]> dumplist) {

@@ -1,6 +1,7 @@
 package org.dslul.ticketreader;
 
-import android.util.Log;
+import static org.dslul.ticketreader.util.GttDate.addMinutesToDate;
+import static org.dslul.ticketreader.util.HelperFunctions.getBytesFromPage;
 
 import org.dslul.ticketreader.util.GttDate;
 
@@ -9,16 +10,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static org.dslul.ticketreader.util.GttDate.addMinutesToDate;
-import static org.dslul.ticketreader.util.HelperFunctions.getBytesFromPage;
-
 
 public class ChipOnPaper {
 
-    private Date date;
-    private int type;
-    private long remainingMins;
-    private int remainingRides;
+    private final Date date;
+    private final int type;
+    private final long remainingMins;
+    private final int remainingRides;
 
     ChipOnPaper(List<byte[]> dumplist) {
 

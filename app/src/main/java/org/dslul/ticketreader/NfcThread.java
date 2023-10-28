@@ -1,8 +1,6 @@
 package org.dslul.ticketreader;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import static org.dslul.ticketreader.util.HelperFunctions.hexStringToByteArray;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,21 +10,24 @@ import android.nfc.tech.IsoDep;
 import android.nfc.tech.NfcA;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
-import static org.dslul.ticketreader.util.HelperFunctions.byteArrayToHexString;
-import static org.dslul.ticketreader.util.HelperFunctions.hexStringToByteArray;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 //parts of code from http://www.emutag.com/soft.php
 
 public class NfcThread extends Thread {
 
-    private Context context;
-    private Intent intent;
-    private Handler mTextBufferHandler, mToastShortHandler, mToastLongHandler, mShowInfoDialogHandler;
+    private final Context context;
+    private final Intent intent;
+    private final Handler mTextBufferHandler;
+    private final Handler mToastShortHandler;
+    private final Handler mToastLongHandler;
+    private final Handler mShowInfoDialogHandler;
 
-    private byte[] readBuffer = new byte[1024]; // maximum theoretical capacity of MIFARE Ultralight
+    private final byte[] readBuffer = new byte[1024]; // maximum theoretical capacity of MIFARE Ultralight
 
     NfcThread(
             Context context,
