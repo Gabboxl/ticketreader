@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("HandlerLeak")
     private final Handler mContentHandler = new Handler() {
         public void handleMessage(Message msg) {
-            List dumplist = (List<byte[]>)msg.obj;
+            List<byte[]> dumplist = (List<byte[]>)msg.obj;
             dump = dumplist;
 
             if(timer != null)
