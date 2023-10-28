@@ -111,22 +111,22 @@ public class MainActivity extends AppCompatActivity {
         onNewIntent(getIntent());
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        imageNfc = (ImageView) findViewById(R.id.imagenfcView);
-        ticketCard = (CardView) findViewById(R.id.ticketCardView);
-        statusCard = (CardView) findViewById(R.id.statusCardView);
-        statusImg = (ImageView) findViewById(R.id.statusImg);
-        statoBiglietto = (TextView) findViewById(R.id.stato_biglietto);
-        infoLabel = (TextView) findViewById(R.id.infolabel);
-        infoTable = (TableLayout) findViewById(R.id.info_table);
-		tipologia = (TextView) findViewById(R.id.tipologia);
-        dataLabel = (TextView) findViewById(R.id.validation_or_expire);
-        dataObliterazione = (TextView) findViewById(R.id.data_obliterazione);
-        corseRimanenti = (TextView) findViewById(R.id.corse_rimaste);
+        imageNfc = findViewById(R.id.imagenfcView);
+        ticketCard = findViewById(R.id.ticketCardView);
+        statusCard = findViewById(R.id.statusCardView);
+        statusImg = findViewById(R.id.statusImg);
+        statoBiglietto = findViewById(R.id.stato_biglietto);
+        infoLabel = findViewById(R.id.infolabel);
+        infoTable = findViewById(R.id.info_table);
+		tipologia = findViewById(R.id.tipologia);
+        dataLabel = findViewById(R.id.validation_or_expire);
+        dataObliterazione = findViewById(R.id.data_obliterazione);
+        corseRimanenti = findViewById(R.id.corse_rimaste);
 
 /*
         new LovelyInfoDialog(this)
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 	@SuppressLint("HandlerLeak")
-	private Handler mContentHandler = new Handler() {
+	private final Handler mContentHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			List dumplist = (List<byte[]>)msg.obj;
             dump = dumplist;
@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-	private Handler mToastShortHandler = new Handler() {
+	private final Handler mToastShortHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			String text = (String)msg.obj;
             if(currentToast != null)
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 	};
 
-	private Handler mToastLongHandler = new Handler() {
+	private final Handler mToastLongHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			String text = (String)msg.obj;
 			if(currentToast != null)
@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 	};
 
-	private Handler mShowInfoDialogHandler = new Handler() {
+	private final Handler mShowInfoDialogHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			String text = (String)msg.obj;
 			//infoDialog = showInfoDialog(text);
