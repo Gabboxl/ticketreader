@@ -52,13 +52,13 @@ import static org.dslul.ticketreader.util.HelperFunctions.millisToString;
 public class MainActivity extends AppCompatActivity {
 
     private NfcAdapter mNfcAdapter;
-	private IntentFilter tech;
-	private IntentFilter[] intentFiltersArray;
-	private PendingIntent pendingIntent;
-	private Intent intent;
-	private AlertDialog alertDialog;
+    private IntentFilter tech;
+    private IntentFilter[] intentFiltersArray;
+    private PendingIntent pendingIntent;
+    private Intent intent;
+    private AlertDialog alertDialog;
 
-	private Toast currentToast;
+    private Toast currentToast;
 
     private ImageView imageNfc;
     private CardView ticketCard;
@@ -66,18 +66,18 @@ public class MainActivity extends AppCompatActivity {
     private ImageView statusImg;
     private TextView statoBiglietto;
     private TextView infoLabel;
-	private TableLayout infoTable;
-	private TextView tipologia;
+    private TableLayout infoTable;
+    private TextView tipologia;
     private TextView dataLabel;
     private TextView dataObliterazione;
-	private TextView corseRimanenti;
+    private TextView corseRimanenti;
 
-	private CountDownTimer timer;
+    private CountDownTimer timer;
 
-	private List<byte[]> dump;
+    private List<byte[]> dump;
 
     // list of NFC technologies detected:
-	private final String[][] techListsArray = new String[][] {
+    private final String[][] techListsArray = new String[][] {
             new String[] {
                 //MifareUltralight.class.getName(),
                 NfcA.class.getName()
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             new String[] {
                 IsoDep.class.getName()
             }
-	};
+    };
 
 
     @Override
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         statoBiglietto = findViewById(R.id.stato_biglietto);
         infoLabel = findViewById(R.id.infolabel);
         infoTable = findViewById(R.id.info_table);
-		tipologia = findViewById(R.id.tipologia);
+        tipologia = findViewById(R.id.tipologia);
         dataLabel = findViewById(R.id.validation_or_expire);
         dataObliterazione = findViewById(R.id.data_obliterazione);
         corseRimanenti = findViewById(R.id.corse_rimaste);
@@ -142,18 +142,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-	protected void onResume() {
-		super.onResume();
-		mNfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, this.techListsArray);
-	}
+    protected void onResume() {
+        super.onResume();
+        mNfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, this.techListsArray);
+    }
 
-	@Override
-	protected void onPause() {
-		// disabling foreground dispatch:
-		//NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-		mNfcAdapter.disableForegroundDispatch(this);
-		super.onPause();
-	}
+    @Override
+    protected void onPause() {
+        // disabling foreground dispatch:
+        //NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        mNfcAdapter.disableForegroundDispatch(this);
+        super.onPause();
+    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -165,16 +165,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-	@SuppressLint("HandlerLeak")
-	private final Handler mContentHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			List dumplist = (List<byte[]>)msg.obj;
+    @SuppressLint("HandlerLeak")
+    private final Handler mContentHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            List dumplist = (List<byte[]>)msg.obj;
             dump = dumplist;
 
-			if(timer != null)
-				timer.cancel();
+            if(timer != null)
+                timer.cancel();
 
-			try {
+            try {
                 //smartcard
                 if(dumplist.size() == 15) {
                     SmartCard smartcard = new SmartCard(dumplist);
@@ -226,94 +226,94 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception ex) {
                 Toast.makeText(getBaseContext(), R.string.unknown_error, Toast.LENGTH_LONG).show();
                 Log.d("card", ex.getMessage());
-				ex.printStackTrace();
+                ex.printStackTrace();
             }
 
         }
-	};
+    };
 
 
 
     private void createTicketInterface(String name, String date, int remainingRides, long remainingMinutes) {
         dataLabel.setText(R.string.data_obliterazione);
-		tipologia.setText(name);
-		dataObliterazione.setText(date);
-		corseRimanenti.setText(Integer.toString(remainingRides));
+        tipologia.setText(name);
+        dataObliterazione.setText(date);
+        corseRimanenti.setText(Integer.toString(remainingRides));
 
-		if(remainingMinutes != 0) {
-			statoBiglietto.setText(R.string.in_corso);
-			statusImg.setImageResource(R.drawable.ic_restore_grey_800_36dp);
-			statusCard.setCardBackgroundColor(getResources().getColor(R.color.colorBlue));
-			Calendar calendar = Calendar.getInstance();
-			int sec = calendar.get(Calendar.SECOND);
-			timer = new CountDownTimer((remainingMinutes*60 - sec)*1000, 1000) {
+        if(remainingMinutes != 0) {
+            statoBiglietto.setText(R.string.in_corso);
+            statusImg.setImageResource(R.drawable.ic_restore_grey_800_36dp);
+            statusCard.setCardBackgroundColor(getResources().getColor(R.color.colorBlue));
+            Calendar calendar = Calendar.getInstance();
+            int sec = calendar.get(Calendar.SECOND);
+            timer = new CountDownTimer((remainingMinutes*60 - sec)*1000, 1000) {
 
-				public void onTick(long millis) {
-					statoBiglietto.setText(String.format("%s %s",
+                public void onTick(long millis) {
+                    statoBiglietto.setText(String.format("%s %s",
                             getResources().getString(R.string.in_corso), millisToString(millis)));
-				}
+                }
 
-				public void onFinish() {
-					statoBiglietto.setText(R.string.corse_esaurite);
-					statusImg.setImageResource(R.drawable.ic_error_grey_800_36dp);
-					statusCard.setCardBackgroundColor(getResources().getColor(R.color.colorRed));
-					if(timer != null)
-						timer.cancel();
-				}
+                public void onFinish() {
+                    statoBiglietto.setText(R.string.corse_esaurite);
+                    statusImg.setImageResource(R.drawable.ic_error_grey_800_36dp);
+                    statusCard.setCardBackgroundColor(getResources().getColor(R.color.colorRed));
+                    if(timer != null)
+                        timer.cancel();
+                }
 
-			}.start();
-		} else if(remainingRides == 0 && remainingMinutes == 0) {
-			statoBiglietto.setText(R.string.corse_esaurite);
-			statusImg.setImageResource(R.drawable.ic_error_grey_800_36dp);
-			statusCard.setCardBackgroundColor(getResources().getColor(R.color.colorRed));
-		} else if(remainingRides != 0 && remainingMinutes == 0) {
-		    if(remainingRides == 1)
+            }.start();
+        } else if(remainingRides == 0 && remainingMinutes == 0) {
+            statoBiglietto.setText(R.string.corse_esaurite);
+            statusImg.setImageResource(R.drawable.ic_error_grey_800_36dp);
+            statusCard.setCardBackgroundColor(getResources().getColor(R.color.colorRed));
+        } else if(remainingRides != 0 && remainingMinutes == 0) {
+            if(remainingRides == 1)
                 statoBiglietto.setText(String.format(getResources().getString(R.string.corse_disponibili_singolare), remainingRides));
-		    else
-			    statoBiglietto.setText(String.format(getResources().getString(R.string.corse_disponibili), remainingRides));
-			statusImg.setImageResource(R.drawable.ic_check_circle_grey_800_36dp);
-			statusCard.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-		}
+            else
+                statoBiglietto.setText(String.format(getResources().getString(R.string.corse_disponibili), remainingRides));
+            statusImg.setImageResource(R.drawable.ic_check_circle_grey_800_36dp);
+            statusCard.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+        }
 
-		statusCard.setVisibility(View.VISIBLE);
-		ticketCard.setVisibility(View.VISIBLE);
-		infoLabel.setText(R.string.read_another_ticket);
-		imageNfc.setVisibility(View.GONE);
-	}
-
-
+        statusCard.setVisibility(View.VISIBLE);
+        ticketCard.setVisibility(View.VISIBLE);
+        infoLabel.setText(R.string.read_another_ticket);
+        imageNfc.setVisibility(View.GONE);
+    }
 
 
 
 
 
-	private final Handler mToastShortHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			String text = (String)msg.obj;
+
+
+    private final Handler mToastShortHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            String text = (String)msg.obj;
             if(currentToast != null)
-			    currentToast.cancel();
-			currentToast = Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT);
-			currentToast.show();
-		}
-	};
+                currentToast.cancel();
+            currentToast = Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT);
+            currentToast.show();
+        }
+    };
 
-	private final Handler mToastLongHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			String text = (String)msg.obj;
-			if(currentToast != null)
-			    currentToast.cancel();
-			currentToast = Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG);
-			currentToast.show();
-		}
-	};
+    private final Handler mToastLongHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            String text = (String)msg.obj;
+            if(currentToast != null)
+                currentToast.cancel();
+            currentToast = Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG);
+            currentToast.show();
+        }
+    };
 
-	private final Handler mShowInfoDialogHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			String text = (String)msg.obj;
-			//infoDialog = showInfoDialog(text);
-			//infoDialog.show();
-		}
-	};
+    private final Handler mShowInfoDialogHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            String text = (String)msg.obj;
+            //infoDialog = showInfoDialog(text);
+            //infoDialog.show();
+        }
+    };
 
 
 
@@ -379,28 +379,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-	private AlertDialog showAlertDialog(String message) {
-		DialogInterface.OnClickListener dialogInterfaceListener = new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				alertDialog.cancel();
-			}
-		};
+    private AlertDialog showAlertDialog(String message) {
+        DialogInterface.OnClickListener dialogInterfaceListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.cancel();
+            }
+        };
 
-		alertDialog = new AlertDialog.Builder(this)
-				.setTitle(R.string.information)
-				.setIcon(android.R.drawable.ic_dialog_info)
-				.setMessage(message)
-   				.setPositiveButton(R.string.close_dialog, null)
-				.create();
+        alertDialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.information)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setMessage(message)
+                .setPositiveButton(R.string.close_dialog, null)
+                .create();
 
-		alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
-			public void onCancel(DialogInterface dialog) {
-			}
-		});
+            public void onCancel(DialogInterface dialog) {
+            }
+        });
 
-		return alertDialog;
-	}
+        return alertDialog;
+    }
 
 }

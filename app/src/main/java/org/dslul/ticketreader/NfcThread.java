@@ -22,39 +22,39 @@ import static org.dslul.ticketreader.util.HelperFunctions.hexStringToByteArray;
 
 public class NfcThread extends Thread {
 
-	private Context context;
-	private Intent intent;
+    private Context context;
+    private Intent intent;
     private Handler mTextBufferHandler, mToastShortHandler, mToastLongHandler, mShowInfoDialogHandler;
-	
-	private byte[] readBuffer = new byte[1024]; // maximum theoretical capacity of MIFARE Ultralight
-	
-	NfcThread(
-			Context context,
-			Intent intent,
-			Handler mTextBufferHandler, Handler mToastShortHandler, Handler mToastLongHandler, Handler mShowInfoDialogHandler
-			) {
-		this.context = context;
-		this.intent = intent;
-		this.mTextBufferHandler = mTextBufferHandler;
-		this.mToastShortHandler = mToastShortHandler;
-		this.mToastLongHandler = mToastLongHandler;
-		this.mShowInfoDialogHandler = mShowInfoDialogHandler;
-	}
-	
-	public void run() {
-		final Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
-		if(tagFromIntent.getTechList()[0].equals(IsoDep.class.getName())) {
+    private byte[] readBuffer = new byte[1024]; // maximum theoretical capacity of MIFARE Ultralight
+
+    NfcThread(
+            Context context,
+            Intent intent,
+            Handler mTextBufferHandler, Handler mToastShortHandler, Handler mToastLongHandler, Handler mShowInfoDialogHandler
+            ) {
+        this.context = context;
+        this.intent = intent;
+        this.mTextBufferHandler = mTextBufferHandler;
+        this.mToastShortHandler = mToastShortHandler;
+        this.mToastLongHandler = mToastLongHandler;
+        this.mShowInfoDialogHandler = mShowInfoDialogHandler;
+    }
+
+    public void run() {
+        final Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+        if(tagFromIntent.getTechList()[0].equals(IsoDep.class.getName())) {
             handleIsoDep(tagFromIntent);
         } else {
             handleNfcA(tagFromIntent);
         }
-	}
+    }
 
 
-	private void handleIsoDep(Tag tagFromIntent) {
-	    IsoDep isoDep = IsoDep.get(tagFromIntent);
-	    if (isoDep != null) {
+    private void handleIsoDep(Tag tagFromIntent) {
+        IsoDep isoDep = IsoDep.get(tagFromIntent);
+        if (isoDep != null) {
             try {
                 isoDep.connect();
 
@@ -113,7 +113,7 @@ public class NfcThread extends Thread {
     }
 
 
-	private void handleNfcA(Tag tagFromIntent) {
+    private void handleNfcA(Tag tagFromIntent) {
 
         final NfcA mfu = NfcA.get(tagFromIntent);
 
@@ -162,30 +162,30 @@ public class NfcThread extends Thread {
             showToastLong(context.getString(R.string.communication_error));
         }
     }
-	
-	private void setContentBuffer(List<byte[]> content) {
-		Message msg = new Message();
-		msg.obj = content;
-		mTextBufferHandler.sendMessage(msg);
-	}
-	
-	private void showToastShort(String text) {
-		Message msg = new Message();
-		msg.obj = text;
-		mToastShortHandler.sendMessage(msg);
-	}
-	
-	private void showToastLong(String text) {
-		Message msg = new Message();
-		msg.obj = text;
-		mToastLongHandler.sendMessage(msg);
-	}
-	
-	private void showInfoDialog(String text) {
-		Message msg = new Message();
-		msg.obj = text;
-		mShowInfoDialogHandler.sendMessage(msg);
-	}
+
+    private void setContentBuffer(List<byte[]> content) {
+        Message msg = new Message();
+        msg.obj = content;
+        mTextBufferHandler.sendMessage(msg);
+    }
+
+    private void showToastShort(String text) {
+        Message msg = new Message();
+        msg.obj = text;
+        mToastShortHandler.sendMessage(msg);
+    }
+
+    private void showToastLong(String text) {
+        Message msg = new Message();
+        msg.obj = text;
+        mToastLongHandler.sendMessage(msg);
+    }
+
+    private void showInfoDialog(String text) {
+        Message msg = new Message();
+        msg.obj = text;
+        mShowInfoDialogHandler.sendMessage(msg);
+    }
 
 
     private int rdNumPages(NfcA mfu, int num) {
@@ -197,24 +197,24 @@ public class NfcThread extends Thread {
         }
         return pagesRead;
     }
-	
-	// first failure (NAK) causes response 0x00 (or possibly other 1-byte values)
-	// second failure (NAK) causes transceive() to throw IOException
-	private byte rdPages(NfcA tag, int pageOffset) {
-		byte[] cmd = {0x30, (byte)pageOffset};
-		byte[] response = new byte[16];
-		try {
-		    response = tag.transceive(cmd);
-		}
-		catch (IOException e) {
-		    return 1;
-		}
-		if (response.length != 16)
-		    return 1;
 
-		System.arraycopy(response, 0, readBuffer, pageOffset * 4, 4);
-		return 0;
-	}
+    // first failure (NAK) causes response 0x00 (or possibly other 1-byte values)
+    // second failure (NAK) causes transceive() to throw IOException
+    private byte rdPages(NfcA tag, int pageOffset) {
+        byte[] cmd = {0x30, (byte)pageOffset};
+        byte[] response = new byte[16];
+        try {
+            response = tag.transceive(cmd);
+        }
+        catch (IOException e) {
+            return 1;
+        }
+        if (response.length != 16)
+            return 1;
+
+        System.arraycopy(response, 0, readBuffer, pageOffset * 4, 4);
+        return 0;
+    }
 
 }
 
