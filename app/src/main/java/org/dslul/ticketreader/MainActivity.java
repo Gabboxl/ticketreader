@@ -1,52 +1,44 @@
 package org.dslul.ticketreader;
 
-import android.annotation.SuppressLint;
+import static org.dslul.ticketreader.util.HelperFunctions.millisToString;
+
+import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
+import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-
-import java.util.Calendar;
-import java.util.List;
-
-import android.nfc.NfcAdapter;
-import android.nfc.tech.NfcA;
-
 import android.widget.Toast;
 
-import android.content.Intent;
-import android.content.IntentFilter;
-
-import android.app.PendingIntent;
-
-import android.os.Handler;
-import android.os.Message;
-
-import android.app.AlertDialog;
-
-import android.content.DialogInterface;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.preference.PreferenceManager;
 
 import com.yarolegovich.lovelydialog.LovelyCustomDialog;
 
 import org.dslul.ticketreader.util.HelperFunctions;
 
-import static org.dslul.ticketreader.util.HelperFunctions.millisToString;
+import java.util.Calendar;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -165,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("HandlerLeak")
+
     private final Handler mContentHandler = new Handler() {
         public void handleMessage(Message msg) {
             List<byte[]> dumplist = (List<byte[]>)msg.obj;
@@ -380,12 +372,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private AlertDialog showAlertDialog(String message) {
-        DialogInterface.OnClickListener dialogInterfaceListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.cancel();
-            }
-        };
+        DialogInterface.OnClickListener dialogInterfaceListener = (dialog, which) -> alertDialog.cancel();
 
         alertDialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.information)
@@ -394,10 +381,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.close_dialog, null)
                 .create();
 
-        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-            public void onCancel(DialogInterface dialog) {
-            }
+        alertDialog.setOnCancelListener(dialog -> {
         });
 
         return alertDialog;
