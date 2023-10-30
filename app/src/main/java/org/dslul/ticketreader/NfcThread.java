@@ -107,7 +107,7 @@ public class NfcThread extends Thread {
                 isoDep.close();
 
             } catch (IOException e) {
-                setContentBuffer(new ArrayList<byte[]>());
+                setContentBuffer(new ArrayList<>());
                 showToastLong(context.getString(R.string.read_failure));
             }
         }
@@ -119,7 +119,7 @@ public class NfcThread extends Thread {
         final NfcA mfu = NfcA.get(tagFromIntent);
 
         if (mfu == null) {
-            setContentBuffer(new ArrayList<byte[]>());
+            setContentBuffer(new ArrayList<>());
             showToastLong(context.getString(R.string.ticket_not_supported));
             return;
         }
@@ -127,7 +127,7 @@ public class NfcThread extends Thread {
         byte[] ATQA = mfu.getAtqa();
 
         if (mfu.getSak() != 0x00 || ATQA.length != 2 || ATQA[0] != 0x44 || ATQA[1] != 0x00) {
-            setContentBuffer(new ArrayList<byte[]>());
+            setContentBuffer(new ArrayList<>());
             showToastLong(context.getString(R.string.ticket_not_supported));
             return;
         }
@@ -155,11 +155,11 @@ public class NfcThread extends Thread {
 
         }
         catch (RuntimeException e) {
-            setContentBuffer(new ArrayList<byte[]>());
+            setContentBuffer(new ArrayList<>());
             showToastLong(context.getString(R.string.read_failure));
         }
         catch (Exception e) {
-            setContentBuffer(new ArrayList<byte[]>());
+            setContentBuffer(new ArrayList<>());
             showToastLong(context.getString(R.string.communication_error));
         }
     }
