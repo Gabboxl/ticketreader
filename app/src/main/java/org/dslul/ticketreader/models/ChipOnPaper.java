@@ -1,4 +1,4 @@
-package org.dslul.ticketreader;
+package org.dslul.ticketreader.models;
 
 import static org.dslul.ticketreader.util.GttDate.addMinutesToDate;
 import static org.dslul.ticketreader.util.HelperFunctions.getBytesFromPage;
@@ -18,7 +18,7 @@ public class ChipOnPaper {
     private final long remainingMins;
     private final int remainingRides;
 
-    ChipOnPaper(List<byte[]> dumplist) {
+    public ChipOnPaper(List<byte[]> dumplist) {
 
         type = (int)getBytesFromPage(dumplist.get(5), 2, 2);
 

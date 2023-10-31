@@ -1,4 +1,4 @@
-package org.dslul.ticketreader;
+package org.dslul.ticketreader.models;
 
 import static org.dslul.ticketreader.util.HelperFunctions.getBytesFromPage;
 import static java.lang.Math.abs;
@@ -184,7 +184,7 @@ public class SmartCard {
     private final long remainingMins;
 
 
-    SmartCard(List<byte[]> dumplist) {
+    public SmartCard(List<byte[]> dumplist) {
         byte[] selectApplication = dumplist.get(0);
         byte[] efEnvironment = dumplist.get(1);
         byte[] efContractList = dumplist.get(2);
@@ -323,7 +323,6 @@ public class SmartCard {
         else
             return remainingMins;
     }
-
 
 
 }

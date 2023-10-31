@@ -1,6 +1,8 @@
 package org.dslul.ticketreader;
 
 
+import org.dslul.ticketreader.models.ChipOnPaper;
+import org.dslul.ticketreader.models.SmartCard;
 import org.dslul.ticketreader.util.GttDate;
 import org.junit.Test;
 
@@ -10,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.dslul.ticketreader.util.HelperFunctions.hexStringToByteArray;
-import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

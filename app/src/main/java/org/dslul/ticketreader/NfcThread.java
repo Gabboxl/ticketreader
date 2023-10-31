@@ -45,6 +45,7 @@ public class NfcThread extends Thread {
     public void run() {
         final Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
+        //check type of nfc tag and handle it accordingly
         if(tagFromIntent.getTechList()[0].equals(IsoDep.class.getName())) {
             handleIsoDep(tagFromIntent);
         } else {
@@ -61,35 +62,35 @@ public class NfcThread extends Thread {
 
                 List<byte[]> dumplist = new ArrayList<>();
 
-                //selectApplication
+                //selectApplication - dumplist index 0
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00A404000E315449432E494341D38012009101")));
-                //efEnvironment
+                //efEnvironment - dumplist index 1
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B2013C1D")));
-                //efContractList
+                //efContractList - dumplist index 2
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B201F41D")));
-                //efContract1
+                //efContract1 - dumplist index 3
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B2014C1D")));
-                //efContract2
+                //efContract2 - dumplist index 4
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B2024C1D")));
-                //efContract3
+                //efContract3 - dumplist index 5
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B2034C1D")));
-                //efContract4
+                //efContract4 - dumplist index 6
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B2044C1D")));
-                //efContract5
+                //efContract5 - dumplist index 7
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B2054C1D")));
-                //efContract6
+                //efContract6 - dumplist index 8
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B2064C1D")));
-                //efContract7
+                //efContract7 - dumplist index 9
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B2074C1D")));
-                //efContract8
+                //efContract8 - dumplist index 10
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B2084C1D")));
-                //efEventLogs1
+                //efEventLogs1 - dumplist index 11
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B201441D")));
-                //efEventLogs2
+                //efEventLogs2 - dumplist index 12
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B202441D")));
-                //efEventLogs3
+                //efEventLogs3 - dumplist index 13
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B203441D")));
-                //efValidation
+                //efValidation - dumplist index 14
                 dumplist.add(isoDep.transceive(hexStringToByteArray("00B201CC1D")));
 
                 setContentBuffer(dumplist);

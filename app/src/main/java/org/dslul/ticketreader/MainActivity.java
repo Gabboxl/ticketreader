@@ -35,6 +35,8 @@ import androidx.preference.PreferenceManager;
 
 import com.yarolegovich.lovelydialog.LovelyCustomDialog;
 
+import org.dslul.ticketreader.models.ChipOnPaper;
+import org.dslul.ticketreader.models.SmartCard;
 import org.dslul.ticketreader.util.HelperFunctions;
 
 import java.util.Calendar;
